@@ -52,11 +52,10 @@ export const Paginate = styled.div`
   }
 
   .pagination > li > a:hover,
-  .pagination > li > span:hover,
-  .pagination > li > a:focus,
-  .pagination > li > span:focus {
+  .pagination > li > span:hover {
     color: black;
     cursor: default;
+    cursor: pointer;
   }
 
   .pagination > .active > a,

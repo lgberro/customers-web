@@ -1,31 +1,60 @@
 import React, {useState, useEffect} from 'react';
+import ImageFadeIn from 'react-image-fade-in';
 import {useParams} from 'react-router-dom';
+import {IconContext} from 'react-icons';
+import {FaBuilding, FaDesktop, FaEnvelope, FaGlobeAmericas, FaMapMarkerAlt, FaPhoneAlt} from 'react-icons/fa';
 
-import Loader from '../../components/Loader';
-import {Screen, Container, Avatar} from './style';
-
-const get = (id, cb) => {
-  fetch(`/customer/${id}`)
-    .then(res => res.json())
-    .then(data => cb(data));
-};
+import {Container, Info, Name, Text} from './style';
 
 export default function Details() {
-  let [loading, setLoading] = useState(true);
   let [customer, setCustomer] = useState();
   let {id} = useParams();
 
   useEffect(() => {
-    setLoading(true);
-    get(id, data => {
-      setCustomer(data);
-      setLoading(false);
-    });
+    fetch(`/customer/${id}`)
+      .then(res => res.json())
+      .then(data => setCustomer(data));
   }, [id]);
 
   return (
-    <Screen>
-      <Container>{customer && <Avatar src={customer.avatar} />}</Container>
-    </Screen>
+    !!customer && (
+      <IconContext.Provider value={{size: '0.8rem', style: {marginRight: '0.3rem'}}}>
+        <Container>
+          <ImageFadeIn
+            src={customer.avatar}
+            width={128}
+            height={128}
+            style={{borderRadius: '0.3rem', marginRight: '0.4rem'}}
+          />
+          <Info>
+            <Name>{customer.name}</Name>
+            <Text>
+              <FaBuilding />
+              {customer.company.name}
+            </Text>
+            <Text>
+              <FaMapMarkerAlt />
+              {customer.address.streetC}
+            </Text>
+            <Text>
+              <FaGlobeAmericas />
+              {customer.address.city} - {customer.address.country}
+            </Text>
+            <Text>
+              <FaPhoneAlt style={{verticalAlign: 'bottom'}} />
+              {customer.phone}
+            </Text>
+            <Text>
+              <FaEnvelope style={{verticalAlign: 'bottom'}} />
+              {customer.email.toLowerCase()}
+            </Text>
+            <Text>
+              <FaDesktop style={{verticalAlign: 'bottom'}} />
+              www.{customer.website.toLowerCase()}
+            </Text>
+          </Info>
+        </Container>
+      </IconContext.Provider>
+    )
   );
 }

@@ -1,68 +1,73 @@
 import React, {useState, useEffect} from 'react';
 import ReactPaginate from 'react-paginate';
+import {useLocation, useHistory} from 'react-router-dom';
+import HashLoader from 'react-spinners/HashLoader';
 
 import Loader from '../../components/Loader';
 import List from './List';
 import {Screen, Container, Search, Empty, Paginate} from './style';
 
-const get = (search, page, cb) => {
-  fetch(`/customers?name=${search}&page=${page}`)
-    .then(res => res.json())
-    .then(data => cb(data));
-};
-
 export default function Book() {
-  let [customers, setCustomers] = useState([]);
-  let [input, setInput] = useState('');
-  let [search, setSearch] = useState('');
-  let [page, setPage] = useState(0);
-  let [pages, setPages] = useState(1);
-  let [loading, setLoading] = useState(true);
+  const [customers, setCustomers] = useState();
+  const [input, setInput] = useState('');
+  const [pages, setPages] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const history = useHistory();
+  const query = new URLSearchParams(useLocation().search);
+  const page = parseInt(query.get('page')) ?? 0;
+  const name = query.get('name') ?? '';
 
   useEffect(() => {
     setLoading(true);
-    get(search, page, data => {
-      setCustomers(data.customers);
-      setPages(data.pages);
-      setLoading(false);
-    });
-  }, [search, page]);
+    fetch(`/customers?page=${page}&name=${name}`)
+      .then(res => res.json())
+      .then(data => {
+        setCustomers(data.customers);
+        setPages(data.pages);
+        setLoading(false);
+      });
+  }, [name, page]);
 
   useEffect(() => {
-    const timeOutId = setTimeout(() => {
-      setSearch(input);
-      setPage(0);
-    }, 500);
-    return () => clearTimeout(timeOutId);
-  }, [input]);
+    const handle = setTimeout(() => history.push(`/?page=0&name=${input}`), 500);
+    return () => clearTimeout(handle);
+  }, [history, input]);
+
+  useEffect(() => setInput(name), [name]);
 
   const onInput = ({target: {value}}) => {
+    setLoading(true);
     setInput(value);
   };
 
-  const onPage = ({selected}) => setPage(selected);
+  const onPage = ({selected}) => history.push(`/?page=${selected}&name=${name}`);
 
   return (
     <Screen>
       <Container>
         <Search type="search" value={input} onChange={onInput} placeholder="name search" spellCheck={false} />
-
         <Loader loading={loading}>
-          {!customers.length ? <Empty>sorry, no results...</Empty> : <List customers={customers} />}
+          {!customers ? (
+            <div style={{height: '10rem', width: '100%'}} />
+          ) : !customers.length ? (
+            <Empty>sorry, no results...</Empty>
+          ) : (
+            <List customers={customers} />
+          )}
+          {pages > 1 && (
+            <Paginate>
+              <ReactPaginate
+                forcePage={page}
+                pageCount={pages}
+                onPageChange={onPage}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                containerClassName="pagination"
+                activeClassName="active"
+              />
+            </Paginate>
+          )}
         </Loader>
-
-        {pages > 1 && (
-          <Paginate>
-            <ReactPaginate
-              pageCount={pages}
-              onPageChange={onPage}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
-              containerClassName="pagination"
-              activeClassName="active"
-            />
-          </Paginate>
-        )}
       </Container>
     </Screen>
   );
