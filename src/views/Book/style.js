@@ -38,7 +38,6 @@ export const Paginate = styled.div`
     display: flex;
     justify-content: center;
     margin-top: 1rem;
-    margin-bottom: 1rem;
   }
 
   .pagination > li {
@@ -68,8 +67,17 @@ export const Paginate = styled.div`
     font-weight: bold;
   }
 
+  .pagination > .page,
+  .pagination > .break {
+    @media (max-width: 40rem) {
+      display: none;
+    }
+  }
+
   .pagination > .previous,
   .pagination > .next {
-    display: none;
+    @media (min-width: 40rem) {
+      display: none;
+    }
   }
 `;

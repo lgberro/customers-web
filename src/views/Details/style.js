@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 
+export const Screen = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 export const Container = styled.div`
   display: flex;
   max-width: 40rem;

@@ -43,8 +43,8 @@ export default function Book() {
   const onPage = ({selected}) => history.push(`/?page=${selected}&name=${name}`);
 
   return (
-    <Screen>
-      <FadeIn style={{width: '100%'}}>
+    <FadeIn style={{width: '100%'}}>
+      <Screen>
         <Container>
           <Search type="search" value={input} onChange={onInput} placeholder="name search" spellCheck={false} />
           <Loader loading={loading}>
@@ -61,16 +61,20 @@ export default function Book() {
                   forcePage={page}
                   pageCount={pages}
                   onPageChange={onPage}
-                  marginPagesDisplayed={2}
-                  pageRangeDisplayed={5}
+                  marginPagesDisplayed={1}
+                  pageRangeDisplayed={2}
                   containerClassName="pagination"
                   activeClassName="active"
+                  pageClassName="page"
+                  breakClassName="break"
+                  previousLabel="previous"
+                  nextLabel="next"
                 />
               </Paginate>
             )}
           </Loader>
         </Container>
-      </FadeIn>
-    </Screen>
+      </Screen>
+    </FadeIn>
   );
 }

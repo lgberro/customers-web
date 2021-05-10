@@ -5,7 +5,7 @@ import {IconContext} from 'react-icons';
 import {FaBuilding, FaDesktop, FaEnvelope, FaGlobeAmericas, FaMapMarkerAlt, FaPhoneAlt} from 'react-icons/fa';
 
 import FadeIn from '../../components/FadeIn';
-import {Container, Info, Name, Text} from './style';
+import {Screen, Container, Info, Name, Text} from './style';
 
 export default function Details() {
   let [customer, setCustomer] = useState();
@@ -21,41 +21,43 @@ export default function Details() {
     !!customer && (
       <IconContext.Provider value={{size: '0.8rem', style: {marginRight: '0.3rem'}}}>
         <FadeIn>
-          <Container>
-            <ImageFadeIn
-              src={customer.avatar}
-              width={128}
-              height={128}
-              style={{borderRadius: '0.3rem', marginRight: '0.4rem'}}
-            />
-            <Info>
-              <Name>{customer.name}</Name>
-              <Text>
-                <FaBuilding />
-                {customer.company.name}
-              </Text>
-              <Text>
-                <FaMapMarkerAlt />
-                {customer.address.streetC}
-              </Text>
-              <Text>
-                <FaGlobeAmericas />
-                {customer.address.city} - {customer.address.country}
-              </Text>
-              <Text>
-                <FaPhoneAlt style={{verticalAlign: 'bottom'}} />
-                {customer.phone}
-              </Text>
-              <Text>
-                <FaEnvelope style={{verticalAlign: 'bottom'}} />
-                {customer.email.toLowerCase()}
-              </Text>
-              <Text>
-                <FaDesktop style={{verticalAlign: 'bottom'}} />
-                www.{customer.website.toLowerCase()}
-              </Text>
-            </Info>
-          </Container>
+          <Screen>
+            <Container>
+              <ImageFadeIn
+                src={customer.avatar}
+                width={128}
+                height={128}
+                style={{borderRadius: '0.3rem', marginRight: '0.4rem'}}
+              />
+              <Info>
+                <Name>{customer.name}</Name>
+                <Text>
+                  <FaBuilding />
+                  {customer.company.name}
+                </Text>
+                <Text>
+                  <FaMapMarkerAlt />
+                  {customer.address.streetC}
+                </Text>
+                <Text>
+                  <FaGlobeAmericas />
+                  {customer.address.city} - {customer.address.country}
+                </Text>
+                <Text>
+                  <FaPhoneAlt style={{verticalAlign: 'bottom'}} />
+                  {customer.phone}
+                </Text>
+                <Text>
+                  <FaEnvelope style={{verticalAlign: 'bottom'}} />
+                  {customer.email.toLowerCase()}
+                </Text>
+                <Text>
+                  <FaDesktop style={{verticalAlign: 'bottom'}} />
+                  www.{customer.website.toLowerCase()}
+                </Text>
+              </Info>
+            </Container>
+          </Screen>
         </FadeIn>
       </IconContext.Provider>
     )
