@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import ReactPaginate from 'react-paginate';
 import {useLocation, useHistory} from 'react-router-dom';
-import HashLoader from 'react-spinners/HashLoader';
 
+import FadeIn from '../../components/FadeIn';
 import Loader from '../../components/Loader';
 import List from './List';
 import {Screen, Container, Search, Empty, Paginate} from './style';
@@ -44,31 +44,33 @@ export default function Book() {
 
   return (
     <Screen>
-      <Container>
-        <Search type="search" value={input} onChange={onInput} placeholder="name search" spellCheck={false} />
-        <Loader loading={loading}>
-          {!customers ? (
-            <div style={{height: '10rem', width: '100%'}} />
-          ) : !customers.length ? (
-            <Empty>sorry, no results...</Empty>
-          ) : (
-            <List customers={customers} />
-          )}
-          {pages > 1 && (
-            <Paginate>
-              <ReactPaginate
-                forcePage={page}
-                pageCount={pages}
-                onPageChange={onPage}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
-                containerClassName="pagination"
-                activeClassName="active"
-              />
-            </Paginate>
-          )}
-        </Loader>
-      </Container>
+      <FadeIn style={{width: '100%'}}>
+        <Container>
+          <Search type="search" value={input} onChange={onInput} placeholder="name search" spellCheck={false} />
+          <Loader loading={loading}>
+            {!customers ? (
+              <div style={{height: '10rem', width: '100%'}} />
+            ) : !customers.length ? (
+              <Empty>sorry, no results...</Empty>
+            ) : (
+              <List customers={customers} />
+            )}
+            {pages > 1 && (
+              <Paginate>
+                <ReactPaginate
+                  forcePage={page}
+                  pageCount={pages}
+                  onPageChange={onPage}
+                  marginPagesDisplayed={2}
+                  pageRangeDisplayed={5}
+                  containerClassName="pagination"
+                  activeClassName="active"
+                />
+              </Paginate>
+            )}
+          </Loader>
+        </Container>
+      </FadeIn>
     </Screen>
   );
 }

@@ -5,7 +5,7 @@ export function makeServer() {
   const server = createServer({
     seeds(server) {
       server.db.loadData({
-        customers: Array(51)
+        customers: Array(1000)
           .fill()
           .map((_, index) => ({
             ...faker.helpers.createCard(),
