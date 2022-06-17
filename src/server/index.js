@@ -1,5 +1,6 @@
 import {createServer} from 'miragejs';
 import faker from 'faker';
+import {faker as fakerjs} from '@faker-js/faker';
 
 export function makeServer() {
   const server = createServer({
@@ -10,7 +11,7 @@ export function makeServer() {
           .map((_, index) => ({
             ...faker.helpers.createCard(),
             id: String('id-' + index),
-            avatar: faker.image.avatar(),
+            avatar: fakerjs.image.avatar(),
           })),
       });
     },
